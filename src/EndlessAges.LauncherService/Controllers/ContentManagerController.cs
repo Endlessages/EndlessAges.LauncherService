@@ -37,8 +37,8 @@ namespace EndlessAges.LauncherService.Controllers
 			if (gameapp < 0)
 				return StatusCode(422);
 
-			//TODO: Server is down at the moment can't check the returned content
-			return Content($"GameApp: {gameapp.ToString()}");
+			//TODO: It points to an endpoint http://game1.endlessagesonline.com/AXEngineApp.cab but what is it for?
+			return Content(@"http://game1.endlessagesonline.com/AXEngineApp.cab");
 		}
 	}
 }
