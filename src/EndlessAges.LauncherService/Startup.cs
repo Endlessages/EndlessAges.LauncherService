@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EndlessAges.LauncherService.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -29,6 +32,12 @@ namespace EndlessAges.LauncherService
 		{
 			// Add framework services.
 			services.AddMvc();
+
+			//This is a hacky looking thing but we must remove the default MVC implementation of action selection
+			services.Remove(services.First(d => d.ServiceType == typeof(IActionSelector)));
+
+			//We must replace it with our custom action selector that uses parameter names
+			services.AddSingleton<IActionSelector, QueryParameterActionSelector>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
