@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EndlessAges.LauncherService.Controllers;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 
 namespace EndlessAges.LauncherService
@@ -47,6 +49,19 @@ namespace EndlessAges.LauncherService
 			loggerFactory.AddDebug();
 
 			app.UseMvc();
+
+			//We need to add static file usage for downloading files
+			app.UseStaticFiles(new StaticFileOptions()
+			{
+				//TODO: Add the headers that EA downloads use
+				OnPrepareResponse = context =>
+				{
+					//Rewrite the content type to octet
+					context.Context.Response.Headers["Content-Type"] = "application/octet-stream";
+					//Remove X-SourceFiles; old EA download didn't have that header
+					context.Context.Response.Headers.Remove("X-SourceFiles");
+				}
+			});
 		}
 	}
 }
