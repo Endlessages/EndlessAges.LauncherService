@@ -127,13 +127,12 @@ namespace EndlessAges.LauncherService
 			{
 				//This is the custom part of this action selection
 				//We also filter by querystring parameter name.
-				//Make sure to call ALL parameters incase there is name intersection between parameter list groups
-				ActionDescriptor[] parameterFilteredDescriptors = finalMatches
-					.Where(m => m.Parameters.All(p => context.HttpContext.Request.QueryString.Value.Contains(p.Name)))
-					.ToArray();
+				//We try to find the first one that matters all query parameters.
+				ActionDescriptor parameterFilteredDescriptor = finalMatches
+					.FirstOrDefault(m => m.Parameters.All(p => context.HttpContext.Request.QueryString.Value.Contains(p.Name)));
 
-				//If we found none or we have more than one then it's still ambiguous
-				if (!parameterFilteredDescriptors.Any() || parameterFilteredDescriptors.Count() > 1)
+				//If we found none then it was ambiguous
+				if (parameterFilteredDescriptor == null)
 				{
 					var actionNames = string.Join(
 						Environment.NewLine,
@@ -143,7 +142,7 @@ namespace EndlessAges.LauncherService
 				}
 
 				//This should be the exact non-ambigious action handler
-				return parameterFilteredDescriptors[0];
+				return parameterFilteredDescriptor;
 			}
 		}
 
