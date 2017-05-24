@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
 
 namespace EndlessAges.LauncherService.Controllers
 {
@@ -11,11 +13,11 @@ namespace EndlessAges.LauncherService.Controllers
 	/// Emulated controller ContentManager.aspx from the Endless Ages backend.
 	/// </summary>
 	[Route("ContentManager.aspx")]
-	public class ContentManager : Controller
+	public class ContentManagerController : Controller
 	{
 		//ContentManager.aspx?installer_patcher=ENDLESS
 		[HttpGet]
-		public IActionResult Get([FromQuery]string installer_patcher)
+		public IActionResult GetPatchingInfo([FromQuery]string installer_patcher)
 		{
 			//If no valid parameter was provided in the query then return an error code
 			//This should only happen if someone is spoofing
@@ -25,6 +27,20 @@ namespace EndlessAges.LauncherService.Controllers
 
 			//TODO: What exactly should the backend return? EACentral returns a broken url
 			return Content($"{@"http://game1.endlessagesonline./ENDLESSINSTALL.cab"}\n{@"ENDLESSINSTALL.cab"}");
+		}
+
+		//ContentManager.aspx?gameapp=1
+		[HttpGet]
+		public IActionResult GetGameApplicationUrl([FromQuery]int gameapp)
+		{
+			//If no valid parameter was provided in the query then return an error code
+			//This should only happen if someone is spoofing
+			//422 (Unprocessable Entity)
+			if (gameapp < 0)
+				return StatusCode(422);
+
+			//TODO: Server is down at the moment can't check the returned content
+			return Content($"GameApp: {gameapp.ToString()}");
 		}
 	}
 }
