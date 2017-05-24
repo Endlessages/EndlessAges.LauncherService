@@ -37,8 +37,27 @@ namespace EndlessAges.LauncherService.Controllers
 			if (gameapp < 0)
 				return StatusCode(422);
 
+			//TODO: Implement server and IP mysql tables
 			//TODO: It points to an endpoint http://game1.endlessagesonline.com/AXEngineApp.cab but what is it for?
 			return Content(@"http://game1.endlessagesonline.com/AXEngineApp.cab");
+		}
+
+		//server_x=1
+		[HttpGet]
+		public IActionResult GetServerInformation([FromQuery]int server_x)
+		{
+			//If no valid parameter was provided in the query then return an error code
+			//This should only happen if someone is spoofing
+			//422 (Unprocessable Entity)
+			if (server_x < 0)
+				return StatusCode(422);
+
+			//TODO: Implement server and IP mysql tables
+			//TODO: I can only guess what is going on here 
+			//It appears it sends Aixen IIA, the server IP for some reason and ENDLESS
+			//This could be the gameserver IP and the gameserver APP name? A Hello might be required
+			//with the app name? I can only guess at this time.
+			return Content("Aixen IIA 96.82.227.146 ENDLESS");
 		}
 	}
 }
