@@ -42,7 +42,7 @@ namespace EndlessAges.LauncherService.Controllers
 			return Content(@"http://game1.endlessagesonline.com/AXEngineApp.cab");
 		}
 
-		//server_x=1
+		//ContentManager.aspx?server_x=1
 		[HttpGet]
 		public IActionResult GetServerInformation([FromQuery]int server_x)
 		{
@@ -58,6 +58,25 @@ namespace EndlessAges.LauncherService.Controllers
 			//This could be the gameserver IP and the gameserver APP name? A Hello might be required
 			//with the app name? I can only guess at this time.
 			return Content("Aixen IIA 96.82.227.146 ENDLESS");
+		}
+
+		//ContentManager.aspx?contenttype=axengineapp
+		[HttpGet]
+		public IActionResult GetContentInformation([FromQuery] string contenttype)
+		{
+			//TODO: Switch or route based on contenttype though maybe not needed
+			//If no valid parameter was provided in the query then return an error code
+			//This should only happen if someone is spoofing
+			//422 (Unprocessable Entity)
+			if (string.IsNullOrWhiteSpace(contenttype))
+				return StatusCode(422);
+
+			//TODO: Figure out the meaning of the below content
+			//This is what eacentral's ASP app returns
+			//EndlessAges.exe 0 AXEngineApp.cab \ 1516649222 1 725635732
+			//But I'm unsure what it means. EndlessAges.exe is the gameclient executable
+			//and AXEngineApp.cab is a compressed archive that contains a new engine app.
+			return Content(@"EndlessAges.exe 0 AXEngineApp.cab \ 1516649222 1 725635732");
 		}
 	}
 }
