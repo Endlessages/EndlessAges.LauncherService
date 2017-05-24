@@ -10,11 +10,11 @@ Checked boxes indicate partial completeness to the known knowledge. Can just be 
 
 - [x] GET **ContentManager.aspx?installer_patcher=ENDLESS**: Provides the content name for the .cab archive containing the launcher to use. Points to *domain*./ENDLESSINSTALL.cab ENDLESSINSTALL.cab which is broken and causes the launcher to hang.
 
-- [ ] GET **domain/ENDLESSINSTALL.cab**: Downloads compressed archive that contains the launcher executable. Assumably this is a patching mechansim for the launcher. Sends with response header Content-Type: application/octet-stream and an ETag and Accept-Ranges: bytes
+- [x] GET **domain/ENDLESSINSTALL.cab**: Downloads compressed archive that contains the launcher executable. Assumably this is a patching mechansim for the launcher. Sends with response header Content-Type: application/octet-stream and an ETag and Accept-Ranges: bytes
 
 - [x] GET **ContentManager.aspx?gameapp=1**: Returns the location of the AXEngineApp.cab file. For example *domain*/AXEngineApp.cab.
 
-- [ ] GET **domain/AXEngineApp.cab**: Downloads compressed archive that contains the game client executable. Assumably this is a patching mechansim for the game client.
+- [x] GET **domain/AXEngineApp.cab**: Downloads compressed archive that contains the game client executable. Assumably this is a patching mechansim for the game client.
 
 - [x] GET **ContentManager.aspx?server_x=1**: Unknown meaning or use. ASP.NET app returns "Aixen IIA *ip* ENDLESS".
 
